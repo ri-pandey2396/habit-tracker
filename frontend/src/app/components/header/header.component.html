@@ -1,0 +1,79 @@
+<nav
+  id="navbar-main"
+  class="navbar navbar-main navbar-expand-lg navbar-dark headroom navbar-transparent p-0"
+>
+  <div class="container-fluid">
+    <a class="navbar-brand mr-lg-5" routerLink="/dashboard"
+      ><img id="brand-logo" style="width: 50px; height: 50px"
+    /></a>
+    <button
+      aria-controls="navbar_global"
+      aria-label="Toggle navigation"
+      id="navbar_global"
+      type="button"
+      class="navbar-toggler"
+      aria-expanded="false"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      id="navbar_global"
+      class="navbar-collapse collapse"
+      aria-expanded="false"
+      aria-hidden="true"
+      style="display: none"
+    >
+      <div class="navbar-collapse-header">
+        <div class="row">
+          <div class="col-6 collapse-brand">
+            <!-- <a href="/dashboard"><img src="assets/img/brand/blue.png" /></a> -->
+          </div>
+          <div class="col-6 collapse-close">
+            <button
+              aria-controls="navbar_global"
+              aria-label="Toggle navigation"
+              id="navbar_global"
+              type="button"
+              class="navbar-toggler"
+              aria-expanded="false"
+            >
+              <span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- <ul class="navbar-nav navbar-nav-hover align-items-lg-center mr-lg-auto">
+        
+      </ul> -->
+      <div class="user-info d-flex align-items-center">
+        <ul
+          class="navbar-nav navbar-nav-hover align-items-lg-center mr-lg-auto"
+        >
+          <li class="nav-item dropdown text-center">
+            <a
+              data-toggle="dropdown"
+              href="javascript:;"
+              role="button"
+              class="nav-link p-0"
+            >
+              <i class="ni ni-app d-lg-none"></i
+              ><span class="nav-link-inner--text">
+                <!-- <img src="/assets/img/tim.png" alt="" style="width: 40px"/> -->
+            </span>
+            </a>
+            <div
+              aria-labelledby="navbarDropdownMenuLink"
+              class="dropdown-menu dropdown-menu-right"
+            >
+              <!-- <a class="dropdown-item" href="javascript:void(0);">Profile</a>  -->
+              <a class="dropdown-item">Sign Out</a>
+              <!-- <a class="dropdown-item" (click)="lopoutwithcognito()">Sign Out</a> -->
+            </div>
+          </li>
+        </ul>
+        <!-- <a href="javascript:void(0);"><img src="/assets/img/tim.png" alt="" style="width: 40px;"></a> -->
+      </div>
+    </div>
+  </div>
+</nav>

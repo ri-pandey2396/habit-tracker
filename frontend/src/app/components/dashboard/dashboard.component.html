@@ -1,0 +1,11 @@
+<div
+  class="content-wrapper d-flex h-100"
+  [ngClass]="{ 'sidebar-open': isSidebarOpen }"
+>
+  <div class="sidebar-wrapper">
+    <app-sidebar [(sidebarState)]="isSidebarOpen"></app-sidebar>
+  </div>
+  <div class="main-wrapper pt-3">
+    <div class="container-fluid"></div>
+  </div>
+</div>

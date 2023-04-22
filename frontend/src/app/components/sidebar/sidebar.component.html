@@ -1,0 +1,38 @@
+<div class="h-100">
+  <div
+    class="sidebar left d-flex justify-content-between"
+    [ngClass]="{ fliph: !sidebarState }"
+  >
+    <ul class="list-sidebar bg-defoult h-100 pt-3">
+      <li>
+        <a routerLink="/progress" routerLinkActive="active"
+          ><i class="fa fa-tachometer"></i>
+          <span class="nav-label"> Progress View</span></a>
+      </li>
+      <li>
+        <a routerLink="/month-task" routerLinkActive="active"
+          ><i class="fa fa-tachometer"></i>
+          <span class="nav-label"> Monthly Tracker</span></a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a
+          href="javascript:void(0)"
+          class="button-left"
+          (click)="toggleSidebarState()"
+          ><span class="fa fa-fw fa-bars"></span>
+          <!-- <span
+            style="
+              margin: auto;
+              font-size: 12px;
+              color: #7883c5;
+              padding: 0 15px;
+            "
+            class="nav-label"
+            >Build {{ buildNum }}</span> -->
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
