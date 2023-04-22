@@ -122,10 +122,10 @@
                       matInput
                       type="text"
                       name="taskAssign"
-                      id="{{ 'name' + i }}" [formControl]="element.get('name')"
+                      id="{{ 'name' + i }}"
+                      [formControl]="element.get('habitName')"
+                      [value]="element.get('habitName').value"
                       placeholder="Enter Your Habit"
-                      [value]="element.habitName[i]"
-                      (input)="getSelectedRow($event, i)"
                     />
                     <!-- </mat-form-field> -->
                   </ng-container>
@@ -140,8 +140,11 @@
                     <input
                       type="checkbox"
                       name="valueCheck"
-                      [disabled]="disableCheckbox(column)" [formControl]="element.get('progress')"
-                      (input)="getSelectedCheckBox($event, column, i)"
+                      [formControl]="
+                        element
+                          .get('progress')
+                          .controls[column].get('isSelected')
+                      "
                     />
                   </ng-container>
                 </td>

@@ -1,5 +1,5 @@
 import { DatePipe, formatCurrency } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { } from '@angular/core'
 import { ControlContainer, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -47,7 +47,7 @@ export class MonthTaskComponent implements OnInit {
   public taskProgress: ITaskProgress[] = [];
 
   constructor(private datepipe: DatePipe, private WS: WebService,
-    private fb: FormBuilder, private toastr: ToastrService) { }
+    private fb: FormBuilder, private toastr: ToastrService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     const mon = new Date().getMonth();
@@ -56,7 +56,7 @@ export class MonthTaskComponent implements OnInit {
       data: new FormArray([])
     })
 
-    console.log(this.formSave, this.formSave.value);
+    // console.log(this.formSave, this.formSave.value);
 
     // console.log(this.currentDay)
     this.currentMonth = this.datepipe.transform(new Date(), 'yyyy-MM');
@@ -102,10 +102,15 @@ export class MonthTaskComponent implements OnInit {
       if (this.checkTypeOfInput(this.displayedColumns[j])) {
         // this.addNewRow.habitName = ''
       } else {
-        (this.addNewRow.controls['progress'] as FormGroup).setControl(this.displayedColumns[j], new FormGroup({ isisSelected: new FormControl(false) }))
+        (this.addNewRow.controls['progress'] as FormGroup)
+          .setControl(
+            this.displayedColumns[j],
+            new FormGroup({
+              isSelected: new FormControl({ value: false, disabled: this.currentDay === parseInt(this.displayedColumns[j]) ? false : true })
+            }))
       }
     }
-    console.log(this.addNewRow)
+    // console.log(this.addNewRow)
     // this.formSave.setValue({ data: this.addNewRow });
   }
 
@@ -113,13 +118,27 @@ export class MonthTaskComponent implements OnInit {
     return <FormArray>this.formSave.get('data');
   }
   public addRow(): void {
-    let group = new FormGroup({})
+    // let group = new FormGroup({})
     // const lessonForm = 
     // console.log(lessonForm.value)
     // this.taskProgress.push(this.addNewRow);
     this.habits.push(this.addNewRow)
-    console.log(this.formSave.value)
-    this.dataSource = new MatTableDataSource(this.habits);
+    // console.log(this.formSave.value, this.habits)
+    this.dataSource = new MatTableDataSource((this.formSave.get('data') as FormArray).controls);
+
+    this.changeDetectorRef.detectChanges();
+    // console.log(this.dataSource)
+  }
+
+  getProgress(element: any, column: any): FormControl {
+    // console.log(, column)
+    // const controls = element.get(`progress`).controls;
+    // const controlsVal = ;
+    // // const val = controlsVal[column].isSelected
+    // console.log(controlsVal)
+    // const valueControl = element.get(`progress`).controls[column].get('isSelected')
+    // console.log(valueControl)
+    return element.get('progress').controls[column].get('isSelected')
   }
 
   public checkTypeOfInput(colValue: string): boolean {
@@ -147,6 +166,7 @@ export class MonthTaskComponent implements OnInit {
   // }
 
   public disableCheckbox(val: string): boolean {
+    // console.log(val)
     return this.currentDay !== parseInt(val)
   }
 
@@ -178,11 +198,11 @@ export class MonthTaskComponent implements OnInit {
     });
   }
 
-  public getSelectedRow(event: Event, i: number): any {
-    console.log((event.target as HTMLInputElement).value, i)
-    this.taskProgress[i].habitName = (event.target as HTMLInputElement).value;
-    console.log(this.taskProgress)
-    this.dataSource = new MatTableDataSource(this.taskProgress);
+  public getSelectedRow(event: any, i: number): any {
+    // console.log((event.target as HTMLInputElement).value, i)
+    // this.taskProgress[i].habitName = (event.target as HTMLInputElement).value;
+    console.log(event)
+    // this.dataSource = new MatTableDataSource(this.taskProgress);
     // this.taskProgress.map((task, i) => {
     //   task.habitName = row.target.value,
     // })
