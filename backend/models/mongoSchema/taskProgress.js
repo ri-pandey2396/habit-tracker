@@ -12,7 +12,7 @@ var monthlyProgressSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: false
     },
     lastModifiedOn: {
         type: Date,
@@ -21,8 +21,8 @@ var monthlyProgressSchema = new mongoose.Schema({
     lastModifiedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: false
     }
 })
 
-exports.monthlyProgress = mongo.model('monthly-progress', monthlyProgressSchema, 'monthly-progress')
+module.exports.monthlyProgress = mongo.model('monthly-progress', monthlyProgressSchema, 'monthly-progress')

@@ -25,7 +25,7 @@ var monthlyTasksSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: false
     },
     lastModifiedOn: {
         type: Date,
@@ -34,8 +34,8 @@ var monthlyTasksSchema = new mongoose.Schema({
     lastModifiedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: false
     }
 })
 
-exports.monthlyTasks = mongo.model('monthly-task', monthlyTasksSchema, 'monthly-task')
+module.exports.monthlyTasks = mongo.model('monthly-task', monthlyTasksSchema, 'monthly-task')
