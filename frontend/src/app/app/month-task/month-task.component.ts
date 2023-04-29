@@ -31,7 +31,8 @@ export class MonthTaskComponent implements OnInit {
   public dataSource!: MatTableDataSource<any>;
   public displayedColumns: string[] = ['habitName'];
   public columnsToDisplay: string[] = [];
-  public addNewRow: FormGroup = new FormGroup({ habitName: new FormControl(''), progress: new FormGroup({}) });
+  public addNewRow: FormGroup = new FormGroup({ progress: new FormGroup({}) });
+  // public addNewRow: FormGroup = new FormGroup({ habitName: new FormControl(''), progress: new FormGroup({}) });
   public trackerData: any[] = []
   public selectedTheme = '';
   public currentDay = 0;
@@ -67,7 +68,7 @@ export class MonthTaskComponent implements OnInit {
     this.createMonthColumn(days);
     // this.createDemoData();
     this.getMonthTaskData();
-    this.createNewRow();
+    // this.createNewRow();
   }
 
   public createMonthColumn(days: number): void {
@@ -84,25 +85,14 @@ export class MonthTaskComponent implements OnInit {
       0).getDate();
   }
 
-  // public createNewRow(): void {
-  //   for (let j = 0; j < this.displayedColumns.length; j++) {
-  //     if (this.checkTypeOfInput(this.displayedColumns[j])) {
-  //       this.addNewRow.habitName = ''
-  //     } else {
-  //       this.addNewRow.progress[this.displayedColumns[j]] = { isSelected: false }
-  //     }
-  //   }
-  //   // console.log(this.addNewRow)
-  //   // this.formSave.setValue({ data: this.addNewRow });
-  // }
-
-
   public createNewRow(): void {
+    const count = this.habits.length;
+    const group: FormGroup = new FormGroup({ _id: new FormControl(''), progress: new FormGroup({}) });
     for (let j = 0; j < this.displayedColumns.length; j++) {
       if (this.checkTypeOfInput(this.displayedColumns[j])) {
-        // this.addNewRow.habitName = ''
+        group.setControl(`habitName${count}`, new FormControl(''));
       } else {
-        (this.addNewRow.controls['progress'] as FormGroup)
+        (group.controls['progress'] as FormGroup)
           .setControl(
             this.displayedColumns[j],
             new FormGroup({
@@ -110,7 +100,7 @@ export class MonthTaskComponent implements OnInit {
             }))
       }
     }
-    // console.log(this.addNewRow)
+    this.habits.push(group)
     // this.formSave.setValue({ data: this.addNewRow });
   }
 
@@ -118,52 +108,19 @@ export class MonthTaskComponent implements OnInit {
     return <FormArray>this.formSave.get('data');
   }
   public addRow(): void {
-    // let group = new FormGroup({})
-    // const lessonForm = 
-    // console.log(lessonForm.value)
-    // this.taskProgress.push(this.addNewRow);
-    this.habits.push(this.addNewRow)
-    // console.log(this.formSave.value, this.habits)
+    this.createNewRow()
+    // console.log((this.formSave.get('data') as FormArray).controls)
     this.dataSource = new MatTableDataSource((this.formSave.get('data') as FormArray).controls);
-
     this.changeDetectorRef.detectChanges();
-    // console.log(this.dataSource)
   }
 
-  getProgress(element: any, column: any): FormControl {
-    // console.log(, column)
-    // const controls = element.get(`progress`).controls;
-    // const controlsVal = ;
-    // // const val = controlsVal[column].isSelected
-    // console.log(controlsVal)
-    // const valueControl = element.get(`progress`).controls[column].get('isSelected')
-    // console.log(valueControl)
+  public getProgress(element: any, column: any): FormControl {
     return element.get('progress').controls[column].get('isSelected')
   }
 
   public checkTypeOfInput(colValue: string): boolean {
     return isNaN(parseInt(colValue));
   }
-
-  // public createDemoData(): void {
-  //   // this.trackerData = [];
-  //   // const objectMap = this.displayedColumns.reduce((acc: any, curr) => (acc[curr] = '', acc), {});
-  //   for (let i = 0; i < 5; i++) {
-  //     let element: any = { _id: `abc${i}` }
-  //     for (let j = 0; j < this.displayedColumns.length; j++) {
-  //       if (this.checkTypeOfInput(this.displayedColumns[j])) {
-  //         element[this.displayedColumns[j]] = 'Demo'
-  //       } else {
-  //         element[this.displayedColumns[j]] = {
-  //           isSelected: false
-  //         }
-  //       }
-  //     }
-  //     this.trackerData.push(element)
-  //   }
-
-  //   this.dataSource = new MatTableDataSource(this.trackerData);
-  // }
 
   public disableCheckbox(val: string): boolean {
     // console.log(val)
@@ -172,10 +129,11 @@ export class MonthTaskComponent implements OnInit {
 
   public saveHabitTracker(): void {
     this.saveMonthlyTask.selectedTheme = this.selectedTheme;
-    if (this.taskProgress.length > 0) {
-      this.taskProgress = this.taskProgress.filter(tp => tp.habitName !== '')
-      if (this.taskProgress.length === 0) {
-        this.dataSource = new MatTableDataSource(this.taskProgress);
+    this.saveMonthlyTask.monthYear = this.currentMonth;
+    if (this.habits.length > 0) {
+      this.removeEmptyControls();
+      if (this.habits.length === 0) {
+        this.dataSource = new MatTableDataSource((this.formSave.get('data') as FormArray).controls);
         this.toastr.warning('Add a habit to save');
         return;
       }
@@ -183,10 +141,9 @@ export class MonthTaskComponent implements OnInit {
       this.toastr.warning('Add a habit to save');
       return;
     }
-    console.log(this.taskProgress, this.saveMonthlyTask);
     this.WS.post('api/monthly/task/save', {
       taskInfo: this.saveMonthlyTask,
-      progress: this.taskProgress
+      progress: this.formSave.get('data')?.getRawValue()
     }).subscribe((res: IResponse) => {
       if (res.status === 1) {
         this.toastr.success(res.description);
@@ -196,6 +153,16 @@ export class MonthTaskComponent implements OnInit {
         this.toastr.error(res.description);
       }
     });
+  }
+
+  public removeEmptyControls(): void {
+    let formArray = this.formSave.get('data') as FormArray;
+    for (let i = formArray.length - 1; i >= 0; i--) {
+      const control = formArray.at(i);
+      if (control.value[`habitName${i}`] === '') {
+        formArray.removeAt(i);
+      }
+    }
   }
 
   public getSelectedRow(event: any, i: number): any {
@@ -209,9 +176,9 @@ export class MonthTaskComponent implements OnInit {
   }
 
   public getSelectedCheckBox(event: Event, column: any, i: number): any {
-    console.log((event.target as HTMLInputElement), column, i)
+    // console.log((event.target as HTMLInputElement), column, i)
     this.taskProgress[i].progress.column = (event.target as HTMLInputElement).value;
-    console.log(this.taskProgress)
+    // console.log(this.taskProgress)
     this.dataSource = new MatTableDataSource(this.taskProgress);
     // this.taskProgress.map((task, i) => {
     //   task.habitName = row.target.value,
@@ -224,16 +191,46 @@ export class MonthTaskComponent implements OnInit {
   }
 
   public changeMonthGrid(): void {
-    // let month = this.currentMonth.split('-')[1]
     this.displayedColumns = ['name'];
     const day = this.daysInMonth(this.currentMonth);
     this.createMonthColumn(day);
-    // this.createDemoData();
+  }
+
+  public mapTaskData(): void {
+    const group: FormGroup = new FormGroup({ _id: new FormControl(''), progress: new FormGroup({}) });
+    for (let j = 0; j < this.taskProgress.length; j++) {
+      group.setControl('_id', new FormControl(this.taskProgress[j]._id));
+      group.setControl(`habitName${j}`, new FormControl(this.taskProgress[j].habitName));
+      if (this.taskProgress[j].hasOwnProperty('progress')) {
+        const progressDays = Object.keys(this.taskProgress[j].progress)
+        for (let i = 0; i < progressDays.length; i++) {
+          (group.controls['progress'] as FormGroup)
+            .setControl(
+              progressDays[i],
+              new FormGroup({
+                isSelected: new FormControl({ value: false, disabled: this.currentDay === parseInt(progressDays[i]) ? false : true })
+              }))
+        }
+        this.habits.push(group)
+
+      }
+      this.dataSource = new MatTableDataSource((this.formSave.get('data') as FormArray).controls);
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   public getMonthTaskData(): void {
-    this.WS.post('api/monthly/task/get', {}).subscribe((res: IResponse) => {
+    this.WS.post('api/monthly/task/get', { monthYear: this.currentMonth }).subscribe((res: IResponse) => {
       if (res.status === 1) {
+        this.saveMonthlyTask = {
+          _id: res.result.habits._id,
+          goals: res.result.habits.goals,
+          notes: res.result.habits.notes,
+          selectedTheme: res.result.habits.selectedTheme
+        };
+        this.selectedTheme = this.saveMonthlyTask.selectedTheme as string;
+        this.taskProgress = res.result.progress as ITaskProgress[];
+        this.mapTaskData();
         this.toastr.success(res.description);
       } else if (res.status === 2) {
         this.toastr.info(res.description);

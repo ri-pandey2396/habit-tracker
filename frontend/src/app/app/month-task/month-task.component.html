@@ -123,8 +123,8 @@
                       type="text"
                       name="taskAssign"
                       id="{{ 'name' + i }}"
-                      [formControl]="element.get('habitName')"
-                      [value]="element.get('habitName').value"
+                      [formControl]="element.get('habitName' + i)"
+                      [value]="element.get('habitName' + i).value"
                       placeholder="Enter Your Habit"
                     />
                     <!-- </mat-form-field> -->

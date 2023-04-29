@@ -5,6 +5,8 @@ export interface IMonthlyTask {
     habit?: ITaskProgress[],
     selectedTheme?: string,
     monthYear?: string;
+    month?: string;
+    year?: number;
     goals?: string,
     notes?: string,
     createdOn?: Date,
