@@ -21,10 +21,15 @@ exports.fetchMonthlyTask = async (req, res, next) => {
         let progress = null
         if (habits) {
             progress = await monthlyProgress.find({ parentTaskTrack: habits._id }).lean()
+            Response.setStatus(1)
+            Response.setResult({ habits, progress })
+            Response.setDescription('Successfully Found Record!')
+        } else {
+            Response.setStatus(2)
+            Response.setResult(null)
+            Response.setDescription('No records Exists For Selected Month!')
         }
-        Response.setStatus(1)
-        Response.setResult({ habits, progress })
-        Response.setDescription('Successfully Found Record!')
+
         return res.send(Response)
     } catch (err) {
         console.log(err.message)
