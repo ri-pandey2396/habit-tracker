@@ -9,6 +9,11 @@ var monthlyProgressSchema = new mongoose.Schema({
         type: {},
         required: true
     },
+    parentTaskTrack: {
+        type: mongoose.Types.ObjectId,
+        ref: 'monthly-task',
+        required: true
+    },
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',

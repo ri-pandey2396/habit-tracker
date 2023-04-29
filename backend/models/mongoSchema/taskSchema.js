@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const { mongo } = require('../../util/mongo')
 var monthlyTasksSchema = new mongoose.Schema({
-    habit: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'monthly-progress',
-        required: true
-    }],
+    // habit: [{
+    //     type: mongoose.Types.ObjectId,
+    //     ref: 'monthly-progress',
+    //     required: true
+    // }],
     selectedTheme: {
         type: String,
         required: true
@@ -13,6 +13,14 @@ var monthlyTasksSchema = new mongoose.Schema({
     goals: {
         type: String,
         required: false
+    },
+    month: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
     },
     notes: {
         type: String,
