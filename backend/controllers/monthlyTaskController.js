@@ -9,7 +9,7 @@ exports.fetchMonthlyTask = async (req, res, next) => {
     try {
         if (!req.body.monthYear || req.body.monthYear === '') {
             Response.setStatus(2)
-            Response.setResult({ habits, progress })
+            Response.setResult(null)
             Response.setDescription('Select Month to See or Create New Habit')
             return res.send(Response)
         }

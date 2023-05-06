@@ -1,31 +1,33 @@
 const mongoose = require('mongoose')
 const { mongo } = require('../../util/mongo')
-var monthlyTasksSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: false,
+        // unique: true
     },
     password: {
         type: String,
-        require: true
+        require: true,
     },
     mobile: {
         type: String,
-        required: false
+        required: false,
+        unique: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     createdOn: {
         type: Date,
         required: true
     },
-
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: false
     },
     lastModifiedOn: {
         type: Date,
@@ -34,8 +36,8 @@ var monthlyTasksSchema = new mongoose.Schema({
     lastModifiedBy: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: false
     }
 })
 
-exports.monthlyTasks = mongo.model('user', monthlyTasksSchema, 'user')
+module.exports.user = mongo.model('user', userSchema, 'user')
