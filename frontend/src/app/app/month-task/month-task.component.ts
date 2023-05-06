@@ -105,7 +105,7 @@ export class MonthTaskComponent implements OnInit {
     // this.formSave.setValue({ data: this.addNewRow });
   }
 
-  get habits(): any {
+  get habits(): FormArray {
     return <FormArray>this.formSave.get('data');
   }
 
@@ -143,7 +143,7 @@ export class MonthTaskComponent implements OnInit {
       this.toastr.warning('Add a habit to save');
       return;
     }
-    this.WS.post('api/monthly/task/save', {
+    this.WS.post('api/master/monthly/task/save', {
       taskInfo: this.saveMonthlyTask,
       progress: this.formSave.get('data')?.getRawValue()
     }).subscribe((res: IResponse) => {
@@ -177,7 +177,7 @@ export class MonthTaskComponent implements OnInit {
   }
 
   public themeToggle(): void {
-    console.log(this.saveMonthlyTask.selectedTheme);
+    // console.log(this.saveMonthlyTask.selectedTheme);
 
   }
 
@@ -234,7 +234,7 @@ export class MonthTaskComponent implements OnInit {
   }
 
   public getMonthTaskData(): void {
-    this.WS.post('api/monthly/task/get', { monthYear: this.currentMonth }).subscribe((res: IResponse) => {
+    this.WS.post('api/master/monthly/task/get', { monthYear: this.currentMonth }).subscribe((res: IResponse) => {
       if (res.status === 1) {
         this.saveMonthlyTask = {
           _id: res.result.habits._id,

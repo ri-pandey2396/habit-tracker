@@ -3,7 +3,9 @@
 html,
 body {
   height: 100%;
+  font-family: "Lato", Arial, sans-serif !important;
   overflow: hidden;
+  color: gray;
 }
 
 body {
@@ -33,7 +35,7 @@ h1 {
 }
 
 .h-100 {
-  height: calc(100vh - 60px)!important;
+  height: calc(100vh - 60px) !important;
 }
 
 .close1 {
@@ -604,4 +606,14 @@ td.mat-cell {
 .page-item.active .page-link {
   background-color: #7c0b3c !important;
   border-color: #7c0b3c !important;
+}
+
+/* signup */
+
+.flex-input .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-form-field-infix {
+  display: flex !important;
+}
+
+.already-wrapper {
+  line-height: 2.5;
 }
