@@ -7,9 +7,9 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/month-task', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'singUp', component: SignupComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'month-task', component: MonthTaskComponent },
   { path: 'progress', component: DashboardComponent }
 ];

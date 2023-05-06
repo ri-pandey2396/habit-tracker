@@ -24,6 +24,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     MatButtonModule,
     MatTooltipModule,
+    MatIconModule,
     ToastrModule.forRoot({
       timeOut: 1000,
       positionClass: 'toast-top-center',
