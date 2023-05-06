@@ -1,1 +1,110 @@
-<p>signup works!</p>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="singupForm">
+      <h2>SignUp</h2>
+      <mat-error *ngIf="loginInvalid">
+        The email and password were not recognised
+      </mat-error>
+      <mat-form-field class="full-width-input flex-input">
+        <input
+          matInput
+          autocomplete="off"
+          id="email"
+          placeholder="Email"
+          formControlName="email"
+          required
+        />
+        <mat-icon
+          *ngIf="singupForm.get('email')?.value"
+          class="{{
+            singupForm.get('email')?.errors ? 'error-icon' : 'success-icon'
+          }}"
+          >check_circle</mat-icon
+        >
+        <mat-error> Please provide a valid email address </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input flex-input">
+        <input
+          matInput
+          autocomplete="off"
+          type="password"
+          id="password"
+          placeholder="Password"
+          formControlName="password"
+          (keyup)="validationForPassword()"
+          required
+        />
+        <mat-icon
+          *ngIf="password"
+          class="{{
+            singupForm.get('password')?.errors ? 'error-icon' : 'success-icon'
+          }}"
+          >check_circle</mat-icon
+        >
+        <mat-error> Please provide a valid password </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input flex-input">
+        <input
+          matInput
+          autocomplete="off"
+          id="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          formControlName="confirmPassword"
+          (focus)="matchPassword()"
+          required
+        />
+        <mat-icon
+          *ngIf="confirm"
+          class="{{ password === confirm ? 'success-icon' : 'error-icon' }}"
+          >check_circle</mat-icon
+        >
+        <mat-error> Please provide a valid password </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="singup()">
+        Signup
+      </button>
+    </form>
+
+    <div
+      *ngIf="singupForm.get('password')?.value"
+      class="passValidation-section"
+    >
+      <!-- Password is Invalid: -->
+      <span
+        class="text-validation {{
+          passwordValidation.length ? 'success' : 'error'
+        }}"
+        >Password Length should be min 8 and max 16 character</span
+      >
+      <span
+        class="text-validation {{
+          passwordValidation.lowercase ? 'success' : 'error'
+        }}"
+        >Must have one Lowercase letter</span
+      >
+      <span
+        class="text-validation {{
+          passwordValidation.uppercase ? 'success' : 'error'
+        }}"
+        >Must have at least one Uppercase letter</span
+      >
+      <span
+        class="text-validation {{
+          passwordValidation.length ? 'success' : 'error'
+        }}"
+        >Must have at least one Number value</span
+      >
+      <span
+        class="text-validation {{
+          passwordValidation.character ? 'success' : 'error'
+        }}"
+        >Must have at least one Special character</span
+      >
+    </div>
+
+    <div class="already-wrapper">
+      <span>Already a user?</span> <a type="btn" routerLink="/login">Login</a>
+    </div>
+  </mat-card-content>
+</mat-card>
