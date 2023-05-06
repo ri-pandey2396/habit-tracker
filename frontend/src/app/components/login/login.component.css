@@ -1,0 +1,28 @@
+mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+}
+
+mat-form-field {
+    display: block;
+}
+
+.error {
+    font-size: 14px;
+    color: crimson;
+}
+
+.success {
+    color: green;
+}
+
+button {
+    width: 100%
+}
+
+a {
+    text-decoration: none;
+    color: #3b71ca;
+    margin-left: 5px;
+}

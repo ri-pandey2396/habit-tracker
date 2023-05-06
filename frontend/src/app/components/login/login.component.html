@@ -1,68 +1,48 @@
-<body style="background-color: #666666">
-  <div class="limiter">
-    <div class="container-login100">
-      <div class="wrap-login100">
-        <form class="login100-form validate-form">
-          <span class="login100-form-title p-b-43"> Login to continue </span>
-
-          <div
-            class="wrap-input100 validate-input"
-            data-validate="Valid email is required: ex@abc.xyz"
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="loginForm">
+      <h2>Log In</h2>
+      <!-- <mat-error *ngIf="loginInvalid">
+        The username and password were not recognised
+      </mat-error> -->
+      <mat-form-field class="full-width-input">
+        <input matInput placeholder="Email" formControlName="email" required />
+        <mat-error> Please provide a valid email address </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+        <mat-error>
+          Please provide a valid password
+          <!-- <div
+            *ngIf="loginForm.get('password')?.value && !loginForm.get('password')?.errors"
           >
-            <input class="input100" type="text" name="email" />
-            <span class="focus-input100"></span>
-            <span class="label-input100">Email</span>
-          </div>
-
-          <div
-            class="wrap-input100 validate-input"
-            data-validate="Password is required"
-          >
-            <input class="input100" type="password" name="pass" />
-            <span class="focus-input100"></span>
-            <span class="label-input100">Password</span>
-          </div>
-
-          <div class="flex-sb-m w-full p-t-3 p-b-32">
-            <div class="contact100-form-checkbox">
-              <input
-                class="input-checkbox100"
-                id="ckb1"
-                type="checkbox"
-                name="remember-me"
-              />
-              <label class="label-checkbox100" for="ckb1"> Remember me </label>
-            </div>
-
-            <div>
-              <a href="#" class="txt1"> Forgot Password? </a>
-            </div>
-          </div>
-
-          <div class="container-login100-form-btn">
-            <button class="login100-form-btn">Login</button>
-          </div>
-
-          <div class="text-center p-t-46 p-b-20">
-            <span class="txt2"> or sign up using </span>
-          </div>
-
-          <div class="login100-form-social flex-c-m">
-            <a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
-              <i class="fa fa-facebook-f" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">
-              <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-          </div>
-        </form>
-
-        <div
-          class="login100-more"
-          style="background-image: url('images/bg-01.jpg')"
-        ></div>
-      </div>
+            Password is valid:
+            <span *ngIf="loginForm.get('password')?.value.length >= 8">Length</span>
+            <span *ngIf="loginForm.get('password').value.match(/[a-z]/)"
+              >Lowercase letter</span
+            >
+            <span *ngIf="loginForm.get('password')?.value.match(/[A-Z]/)"
+              >Uppercase letter</span
+            >
+            <span *ngIf="v.get('password')?.value.match(/[0-9]/)"
+              >Number</span
+            >
+            <span
+              *ngIf="form.get('password')?.value.match('/[!@#\$%\^&\*\(\)_\+\-\.,:;<=>\?@\[\]\{\}\|\\]/')"
+              >Special character</span>
+          </div> -->
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="login()">Login</button>
+    </form>
+    <div class="already-wrapper">
+      <span>Already a user?</span> <a type="btn" routerLink="/signup">Signup</a>
     </div>
-  </div>
-</body>
+  </mat-card-content>
+</mat-card>
