@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ThemesComponent } from './app/themes/themes.component';
-import { MonthTaskComponent } from './app/month-task/month-task.component';
+import { ThemesComponent } from './components/themes/themes.component';
+import { MonthTaskComponent } from './components/month-task/month-task.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -25,8 +25,12 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-
-
+import { AuthInterceptor } from './services/authInterceptor'
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { NgChartsModule } from 'ng2-charts';
+import { ProgressViewComponent } from './components/progress-view/progress-view.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +40,8 @@ import { MatIconModule } from '@angular/material/icon';
     DashboardComponent,
     SidebarComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ProgressViewComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatToolbarModule,
+    MatMenuModule,
     FormsModule,
     HttpClientModule,
     MatButtonModule,
@@ -58,9 +65,15 @@ import { MatIconModule } from '@angular/material/icon';
       timeOut: 1000,
       positionClass: 'toast-top-center',
       preventDuplicates: true,
-    }),
+    })
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, JwtHelperService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

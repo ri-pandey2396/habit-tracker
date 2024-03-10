@@ -1,4 +1,4 @@
-<nav
+<!-- <nav
   id="navbar-main"
   class="navbar navbar-main navbar-expand-lg navbar-dark headroom navbar-transparent p-0"
 >
@@ -9,7 +9,6 @@
     <button
       aria-controls="navbar_global"
       aria-label="Toggle navigation"
-      id="navbar_global"
       type="button"
       class="navbar-toggler"
       aria-expanded="false"
@@ -21,12 +20,11 @@
       class="navbar-collapse collapse"
       aria-expanded="false"
       aria-hidden="true"
-      style="display: none"
+      style="display: none; justify-content: end"
     >
       <div class="navbar-collapse-header">
         <div class="row">
           <div class="col-6 collapse-brand">
-            <!-- <a href="/dashboard"><img src="assets/img/brand/blue.png" /></a> -->
           </div>
           <div class="col-6 collapse-close">
             <button
@@ -43,9 +41,6 @@
         </div>
       </div>
 
-      <!-- <ul class="navbar-nav navbar-nav-hover align-items-lg-center mr-lg-auto">
-        
-      </ul> -->
       <div class="user-info d-flex align-items-center">
         <ul
           class="navbar-nav navbar-nav-hover align-items-lg-center mr-lg-auto"
@@ -55,25 +50,60 @@
               data-toggle="dropdown"
               href="javascript:;"
               role="button"
-              class="nav-link p-0"
+              id="navbarDropdownMenuLink"
+              aria-haspopup="true"
+              aria-expanded="false"
+              class="nav-link p-0 dropdown-toggle"
             >
               <i class="ni ni-app d-lg-none"></i
               ><span class="nav-link-inner--text">
-                <!-- <img src="/assets/img/tim.png" alt="" style="width: 40px"/> -->
-            </span>
+                <i
+                  class="fa fa-user"
+                  aria-hidden="true"
+                  style="font-size: 30px"
+                ></i>
+              </span>
             </a>
             <div
               aria-labelledby="navbarDropdownMenuLink"
               class="dropdown-menu dropdown-menu-right"
             >
-              <!-- <a class="dropdown-item" href="javascript:void(0);">Profile</a>  -->
               <a class="dropdown-item">Sign Out</a>
-              <!-- <a class="dropdown-item" (click)="lopoutwithcognito()">Sign Out</a> -->
             </div>
           </li>
         </ul>
-        <!-- <a href="javascript:void(0);"><img src="/assets/img/tim.png" alt="" style="width: 40px;"></a> -->
       </div>
     </div>
   </div>
-</nav>
+</nav> -->
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Third Line</span>
+    <span class="example-spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon
+        class="profile-icon"
+        aria-hidden="false"
+        aria-label="Profile icon"
+        >account_circle</mat-icon
+      >
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="signout()">Sign Out</button>
+      <!-- <button mat-menu-item>Item 2</button> -->
+    </mat-menu>
+    <!-- <mat-icon
+      class="example-icon"
+      aria-hidden="false"
+      aria-label="Example heart icon"
+      >favorite</mat-icon
+    >
+    <mat-icon
+      class="example-icon"
+      aria-hidden="false"
+      aria-label="Example delete icon"
+      >delete</mat-icon
+    > -->
+  </mat-toolbar-row>
+</mat-toolbar>

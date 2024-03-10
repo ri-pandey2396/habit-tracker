@@ -15,7 +15,8 @@ exports.fetchMonthlyTask = async (req, res, next) => {
         }
         const habits = await monthlyTasks.findOne({
             month: getMonthInAlphabets(new Date(req.body.monthYear).getMonth()),
-            year: parseInt(req.body.monthYear.split('-')[0])
+            year: parseInt(req.body.monthYear.split('-')[0]),
+            createdBy: req.body.authorisedUser._id
         }).lean()
 
         let progress = null
@@ -55,7 +56,8 @@ exports.saveMonthlyTask = async (req, res, next) => {
                 selectedTheme: req.body.taskInfo.selectedTheme,
                 goals: req.body.taskInfo.goals,
                 notes: req.body.taskInfo.notes,
-                lastModifiedOn: new Date()
+                lastModifiedOn: new Date(),
+                lastModifiedBy: req.body.authorisedUser._id
             })
             if (req.body.progress.length > 0) {
                 for (let i = 0; i < req.body.progress.length; i++) {
@@ -63,14 +65,17 @@ exports.saveMonthlyTask = async (req, res, next) => {
                         await monthlyProgress.findByIdAndUpdate(req.body.progress[i]._id, {
                             habitName: req.body.progress[i][`habitName${i}`],
                             progress: req.body.progress[i].progress,
-                            lastModifiedOn: new Date()
+                            lastModifiedOn: new Date(),
+                            lastModifiedBy: req.body.authorisedUser._id
                         }, { new: true })
                     } else {
                         const task = new monthlyProgress({
                             habitName: req.body.progress[i][`habitName${i}`],
                             progress: req.body.progress[i].progress,
+                            lastModifiedBy: req.body.authorisedUser._id,
                             lastModifiedOn: new Date(),
-                            createdOn: new Date()
+                            createdOn: new Date(),
+                            createdBy: req.body.authorisedUser._id,
                         })
                         await task.save()
                         if (task) {
@@ -89,7 +94,9 @@ exports.saveMonthlyTask = async (req, res, next) => {
                 goals: req.body.taskInfo.goals,
                 notes: req.body.taskInfo.notes,
                 createdOn: new Date(),
-                lastModifiedOn: new Date()
+                lastModifiedOn: new Date(),
+                createdBy: req.body.authorisedUser._id,
+                lastModifiedBy: req.body.authorisedUser._id
             })
 
             await monthHabit.save()
@@ -102,7 +109,9 @@ exports.saveMonthlyTask = async (req, res, next) => {
                         progress: req.body.progress[i].progress,
                         parentTaskTrack: monthHabit._id,
                         lastModifiedOn: new Date(),
-                        createdOn: new Date()
+                        createdOn: new Date(),
+                        createdBy: req.body.authorisedUser._id,
+                        lastModifiedBy: req.body.authorisedUser._id
                     })
                     await task.save()
                     if (task) {
@@ -112,7 +121,8 @@ exports.saveMonthlyTask = async (req, res, next) => {
             }
         }
         Response.setStatus(1)
-        Response.setResult({ habits, progress })
+        // Response.setResult({ habits, progress })
+        Response.setResult(null)
         Response.setDescription('Successfully Saved Habit Record!')
         return res.send(Response)
     } catch (err) {

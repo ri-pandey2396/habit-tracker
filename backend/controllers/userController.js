@@ -34,6 +34,7 @@ exports.singUpUser = async (req, res, next) => {
 
         const password = securePassword(req.body.signup.password)
 
+        const count = await user.countDocuments();
         const newUser = new user({
             email: req.body.signup.email,
             password,
@@ -41,6 +42,7 @@ exports.singUpUser = async (req, res, next) => {
             lastModifiedOn: new Date()
         })
 
+        newUser.mobile = '9999999999' + count
         await newUser.save()
 
         if (newUser) {
@@ -97,7 +99,7 @@ exports.loginUser = async (req, res, next) => {
 
             if (login) {
                 Response.setStatus(1)
-                Response.setResult(null)
+                Response.setResult({ login })
                 Response.setDescription('Successfully Logged In')
             } else {
                 Response.setStatus(2)

@@ -13,7 +13,7 @@ var userSchema = new mongoose.Schema({
     mobile: {
         type: String,
         required: false,
-        unique: true
+        // unique: true
     },
     email: {
         type: String,

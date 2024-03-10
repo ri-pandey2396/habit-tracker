@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-module.exports.mongo = mongoose.createConnection(process.env.MONGO__DB, { useUnifiedTopology: true, useNewUrlParser: true }, (err, client) => {
+module.exports.mongo = mongoose.createConnection(process.env.MONGO__DB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+}, (err, client) => {
     // client.db('trackerDev')
     console.log('Connected to Read DB', process.env.MONGO__DB)
 })

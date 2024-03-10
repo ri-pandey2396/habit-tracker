@@ -1,0 +1,202 @@
+<div
+  class="content-wrapper d-flex h-100"
+  [ngClass]="{ 'sidebar-open': isSidebarOpen }"
+>
+  <div class="sidebar-wrapper">
+    <app-sidebar [(sidebarState)]="isSidebarOpen"></app-sidebar>
+  </div>
+  <div class="main-wrapper pt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <h2 class="title">Select Your Themes Here!</h2>
+        <div class="theme-section" style="margin-bottom: 25px">
+          <label id="example-radio-group-label"
+            >Pick your favorite Theme:</label
+          >
+          <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group"
+            [(ngModel)]="selectedTheme"
+            (change)="themeToggle()"
+          >
+            <mat-radio-button
+              class="example-radio-button"
+              [matTooltip]="season"
+              *ngFor="let season of seasons"
+              [value]="season"
+            >
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <div
+        class="row tracker-wrapper"
+        [ngClass]="{
+          'theme-winter': selectedTheme.toLowerCase() === 'winter',
+          'theme-spring': selectedTheme.toLowerCase() === 'spring',
+          'theme-summer': selectedTheme.toLowerCase() === 'summer',
+          'theme-autumn': selectedTheme.toLowerCase() === 'autumn'
+        }"
+      >
+        <h1 class="title">Monthly Habit Tracker</h1>
+        <div class="col-md-12">
+          <div class="tracker-month-btn">
+            <span class="tracker-month">
+              <b>Month:</b>
+              <input
+                type="month"
+                id="month"
+                [(ngModel)]="currentMonth"
+                name="month"
+                (change)="changeMonthGrid()"
+              />
+            </span>
+            <span class="tracker-buttons">
+              <button mat-raised-button (click)="addRow()">New Row</button>
+              <button
+                mat-raised-button
+                class="btn-success"
+                (click)="saveHabitTracker()"
+              >
+                Save
+              </button>
+            </span>
+          </div>
+          <!-- <form [formGroup]="formSave">
+            <table mat-table [dataSource]="dataSource">
+              <ng-container
+                [matColumnDef]="column"
+                *ngFor="let column of displayedColumns"
+              >
+                <th mat-header-cell *matHeaderCellDef>
+                  {{ checkTypeOfInput(column) ? "Your Habit" : column }}
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <ng-container *ngIf="checkTypeOfInput(column)">
+                    <input
+                      matInput
+                      type="text"
+                      name="taskAssign"
+                      id="{{ 'name' + i }}"
+                      placeholder="Enter Your Habit"
+                      [value]="element.habitName[i]"
+                      (input)="getSelectedRow($event, i)"
+                    />
+                  </ng-container>
+                  <ng-container *ngIf="!checkTypeOfInput(column)">
+                    <input
+                      type="checkbox"
+                      name="valueCheck"
+                      [disabled]="disableCheckbox(column)"
+                      (input)="getSelectedRow($event, i)"
+                      [(ngModel)]="element.progress[column].isSelected"
+                    />
+                    <input
+                      type="checkbox"
+                      name="valueCheck"
+                      [disabled]="disableCheckbox(column)"
+                      (input)="getSelectedCheckBox($event, column, i)"
+                    />
+                  </ng-container>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+            </table>
+          </form> -->
+
+          <form [formGroup]="formSave">
+            <table mat-table [dataSource]="dataSource">
+              <ng-container
+                [matColumnDef]="column"
+                *ngFor="let column of displayedColumns"
+              >
+                <th mat-header-cell *matHeaderCellDef>
+                  {{ checkTypeOfInput(column) ? "Your Habit" : column }}
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <ng-container *ngIf="checkTypeOfInput(column)">
+                    <!-- <mat-form-field> -->
+                    <input
+                      matInput
+                      type="text"
+                      name="taskAssign"
+                      id="{{ 'name' + i }}"
+                      [formControl]="element.get('habitName' + i)"
+                      [value]="element.get('habitName' + i).value"
+                      placeholder="Enter Your Habit"
+                    />
+                    <!-- </mat-form-field> -->
+                  </ng-container>
+                  <ng-container *ngIf="!checkTypeOfInput(column)">
+                    <!-- <input
+                      type="checkbox"
+                      name="valueCheck"
+                      [disabled]="disableCheckbox(column)"
+                      (input)="getSelectedRow($event, i)"
+                      [(ngModel)]="element.progress[column].isSelected"
+                    /> -->
+                    <input
+                      type="checkbox"
+                      name="valueCheck"
+                      [formControl]="
+                        element
+                          .get('progress')
+                          .controls[column].get('isSelected')
+                      "
+                    />
+                  </ng-container>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+            </table>
+          </form>
+
+          <!-- </div> -->
+        </div>
+      </div>
+      <div class="row goals-notes-wrapper">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="goals">Goals</label>
+            <textarea
+              type="text"
+              class="form-control"
+              id="goals"
+              [(ngModel)]="saveMonthlyTask.goals"
+              aria-describedby="goals"
+              placeholder="Enter Your Monthly Goals Here: "
+            >
+            </textarea>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea
+              type="text"
+              class="form-control"
+              id="notes"
+              [(ngModel)]="saveMonthlyTask.notes"
+              aria-describedby="notes"
+              placeholder="Enter Notes Here: "
+            >
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile
+    *ngFor="let tile of tiles"
+    [colspan]="tile.cols"
+    [rowspan]="tile.rows"
+    [style.background]="tile.color"
+  >
+  </mat-grid-tile>
+</mat-grid-list> -->

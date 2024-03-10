@@ -3,9 +3,9 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { IResponse } from 'src/app/app/models/server-data-response';
-import { AuthService } from 'src/app/app/services/auth.service';
-import { WebService } from 'src/app/app/services/web.service';
+import { IResponse } from 'src/app/models/server-data-response';
+import { AuthService } from 'src/app/services/auth.service';
+import { WebService } from 'src/app/services/web.service';
 
 @Component({
   selector: 'app-signup',

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { IResponse } from 'src/app/app/models/server-data-response';
-import { AuthService } from 'src/app/app/services/auth.service';
-import { WebService } from 'src/app/app/services/web.service';
+import { IResponse } from 'src/app/models/server-data-response';
+import { AuthService } from 'src/app/services/auth.service';
+import { WebService } from 'src/app/services/web.service';
 
 @Component({
   selector: 'app-login',
@@ -52,9 +52,6 @@ export class LoginComponent implements OnInit {
     this.formSubmitAttempt = false;
     if (this.loginForm.valid) {
       try {
-        // const username = this.form.get('username').value;
-        // const password = this.form.get('password').value;
-        // await this.authService.login(username, password);
       } catch (err) {
         this.loginInvalid = true;
       }
@@ -71,7 +68,18 @@ export class LoginComponent implements OnInit {
     this.WS.post('api/master/user/login', { login: this.loginValue }).subscribe((res: IResponse) => {
       if (res.status === 1) {
         this.toastr.success(res.description);
-        this.router.navigate(['/month-task'])
+        this.WS.post('api/master/authenticate/user', { _id: res.result.login._id }).subscribe((resp: IResponse) => {
+          if (resp.status === 1) {
+            if (resp.result) {
+              this.authService.setToken(resp.result);
+              this.router.navigate(['/month-task'])
+            }
+          } else if (resp.status === 2) {
+            this.toastr.info(res.description);
+          } else {
+            this.toastr.error(res.description);
+          }
+        });
       } else if (res.status === 2) {
         this.toastr.info(res.description);
       } else {
